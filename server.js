@@ -24,10 +24,12 @@ app.get("/", homeController.postIndex);
 app.get("/posts", postsController.index);
 
 // Definisco la rotta del create
-app.get("/create", postsController.create);
+app.get("/posts/create", postsController.create);
+
+app.get("/posts/:slug/download", postsController.downloadImage);
 
 // Definisco la rotta dei posts con use
-app.use("/posts", postsRouter);
+// app.use("/posts", postsRouter);
 
 // Avvio il server
 app.listen(port, () => {

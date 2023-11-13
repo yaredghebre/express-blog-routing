@@ -1,4 +1,5 @@
 const posts = require("../db/db.js");
+const path = require("path");
 
 // Funzione per rotta INDEX
 const index = (req, res) => {
@@ -14,7 +15,7 @@ const index = (req, res) => {
         ...posts.map(
           (post) => `<li>
             <h3>${post.title}</h3>
-            <img src="/img/posts/${post.image}" alt="${post.title}" />
+            <img src="/imgs/posts/${post.image}" alt="${post.title}" />
             <ul>
               <li>${post.content}</li>
               <li>
@@ -41,6 +42,12 @@ const show = (req, res) => {
       res.json(post);
     },
   });
+
+  const post = posts.find((post) => post.slug === postslug);
+  if (!posts) {
+    res.status(404).send("Post inesistente :(");
+    return;
+  }
 };
 
 // Funzione per rotta CREATE
@@ -56,6 +63,20 @@ const create = (req, res) => {
   });
 };
 
+// Funzione per download Immagine
+const downloadImage = (req, res) => {
+  const post = findOrFail(req, res);
+  const imagePath = path.resolve(
+    __dirname,
+    "..",
+    "public",
+    "imgs",
+    "posts",
+    post.image
+  );
+  res.download(imagePath);
+};
+
 // Useful Functions
 const findOrFail = (req, res) => {
   const postSlug = req.params.slug;
@@ -69,4 +90,4 @@ const findOrFail = (req, res) => {
   return post;
 };
 
-module.exports = { index, show, create };
+module.exports = { index, show, create, downloadImage };
