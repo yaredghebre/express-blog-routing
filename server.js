@@ -23,6 +23,9 @@ app.get("/", homeController.postIndex);
 // Definisco la rotta dei posts con get
 app.get("/posts", postsController.index);
 
+// Definisco la rotta del create
+app.get("/create", postsController.create);
+
 // Definisco la rotta dei posts con use
 app.use("/posts", postsRouter);
 

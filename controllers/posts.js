@@ -1,5 +1,6 @@
 const posts = require("../db/db.js");
 
+// Funzione per rotta INDEX
 const index = (req, res) => {
   // uso format per abbreviare la content negotiation
   res.format({
@@ -31,12 +32,26 @@ const index = (req, res) => {
   });
 };
 
+// Funzione per rotta SHOW
 const show = (req, res) => {
   res.format({
     json: () => {
       const post = findOrFail(req, res);
 
       res.json(post);
+    },
+  });
+};
+
+// Funzione per rotta CREATE
+const create = (req, res) => {
+  res.format({
+    html: () => {
+      const htmlPosts = `<h1>Nuovo Post</h1> <a> Crea +</a>`;
+      res.send(htmlPosts);
+    },
+    default: () => {
+      res.status(406).send("Richiesta non supportata");
     },
   });
 };
@@ -54,4 +69,4 @@ const findOrFail = (req, res) => {
   return post;
 };
 
-module.exports = { index, show };
+module.exports = { index, show, create };
