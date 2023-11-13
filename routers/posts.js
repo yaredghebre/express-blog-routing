@@ -6,6 +6,6 @@ const postsController = require("../controllers/posts");
 router.get("/", postsController.index);
 
 // Rotta per lo show
-// router.get()
+router.get("/:slug", postsController.show);
 
 module.exports = router;

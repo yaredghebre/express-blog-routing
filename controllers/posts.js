@@ -9,7 +9,7 @@ const index = (req, res) => {
         "<h1>Feed</h1>",
         "<ul>",
 
-        // spred operator dell'array nel json
+        // spred operator dell'array db.js
         ...posts.map(
           (post) => `<li>
             <h3>${post.title}</h3>
@@ -31,4 +31,27 @@ const index = (req, res) => {
   });
 };
 
-module.exports = { index };
+const show = (req, res) => {
+  res.format({
+    json: () => {
+      const post = findOrFail(req, res);
+
+      res.json(post);
+    },
+  });
+};
+
+// Useful Functions
+const findOrFail = (req, res) => {
+  const postSlug = req.params.slug;
+
+  const post = posts.find((post) => post.slug == postSlug);
+
+  if (!posts) {
+    res.status(404).send(`Post con slug ${postSlug} non trovato :(`);
+  }
+
+  return post;
+};
+
+module.exports = { index, show };
